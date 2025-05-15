@@ -11,7 +11,11 @@ with st.form("roi_form"):
     st.subheader("🔧 Input Parameters")
     rooms = st.number_input("Number of Rooms", min_value=1, value=6)
     price = st.number_input("Price per Night (USD)", min_value=0.0, value=120.0, step=10.0)
-    occupancy = st.slider("Occupancy Rate (%)", min_value=0, max_value=100, value=70) / 100
+    occupancy = st.select_slider(
+        "Occupancy Rate (%)",
+        options=[40, 50, 60, 70, 80, 90, 100],
+        value=70
+    ) / 100
     days = st.number_input("Days per Year", min_value=1, value=365)
     monthly_opex = st.number_input("Monthly Operating Expenses (OPEX)", min_value=0.0, value=14800.0, step=100.0)
     capex = st.number_input("Total Investment (CAPEX)", min_value=0.0, value=259000.0, step=1000.0)
@@ -47,7 +51,6 @@ if submitted:
                           index=[f"${int(p)}" for p in price_range],
                           columns=[f"{round(o*100)}%" for o in occ_range])
 
-    # Get matching row/col index
     price_labels = [int(p) for p in price_range]
     occ_labels = [round(o * 100) for o in occ_range]
     row_idx = price_labels.index(int(price)) if int(price) in price_labels else None
